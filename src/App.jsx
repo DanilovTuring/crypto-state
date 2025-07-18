@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import './App.css'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import CryptoStatus from './components/CryptoStatus'
 function App() {
   
 
@@ -13,6 +14,7 @@ function App() {
         <main>
           <h1 className="text-4x1 font-bold">CryptoState</h1>
           <Home />
+          <CryptoStatus />
         </main>
     </div>
 
