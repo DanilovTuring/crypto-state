@@ -1,104 +1,119 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import CryptoCard from './CryptoCard';
 
 function CryptoStatus() {
-  const [cryptoData, setCryptoData] = useState({});
+  const [cryptos, setCryptos] = useState([]);
+  const [binancePrices, setBinancePrices] = useState({});
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  // Mapeo de símbolos Binance a IDs de CoinGecko
-  const symbolMap = {
-    'BTCUSDT': 'bitcoin',
-    'ETHUSDT': 'ethereum',
-    'BNBUSDT': 'binancecoin',
-    'SOLUSDT': 'solana',
-    'XRPUSDT': 'ripple',
-    'ADAUSDT': 'cardano'
-  };
-
-  const symbols = Object.keys(symbolMap);
-
-  const fetchMarketData = async () => {
+  // 1. Obtener datos estáticos de CoinGecko (metadata, market cap, etc.)
+  const fetchCryptoData = useCallback(async () => {
     try {
-      // 1. Obtener precios y cambios de Binance
-      const binanceData = await Promise.all([
-        fetch('https://api.binance.com/api/v3/ticker/24hr')
-          .then(res => res.json())
-          .then(data => data.filter(item => symbols.includes(item.symbol))
-        ),
-        fetch('https://api.binance.com/api/v3/ticker/price')
-          .then(res => res.json())
-          .then(data => data.filter(item => symbols.includes(item.symbol))
-        )
-      ]);
-
-      // 2. Obtener supply de CoinGecko
-      const coinGeckoResponse = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${Object.values(symbolMap).join(',')}`
+      setLoading(true);
+      const res = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}`
       );
-      const coinGeckoData = await coinGeckoResponse.json();
-
-      // 3. Combinar datos
-      const combinedData = {};
-      
-      binanceData[0].forEach(item => {
-        const cgItem = coinGeckoData.find(cg => cg.symbol === item.symbol.toLowerCase().replace('usdt', ''));
-        combinedData[item.symbol] = {
-          price: item.lastPrice,
-          change: parseFloat(item.priceChangePercent),
-          marketCap: cgItem ? cgItem.market_cap : null
-        };
-      });
-
-      setCryptoData(combinedData);
-      setLastUpdate(new Date());
-    } catch (error) {
-      console.error('Error fetching data:', error);
+      const data = await res.json();
+      setCryptos(data);
+    } catch (err) {
+      console.error('Error fetching crypto data:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [page]);
 
+  // 2. Conexión WebSocket a Binance para precios en tiempo real
   useEffect(() => {
-    fetchMarketData();
-    const intervalId = setInterval(fetchMarketData, 15000); // 15 segundos
-    
-    return () => clearInterval(intervalId);
+    const ws = new WebSocket('wss://stream.binance.com:9443/ws/!ticker@arr');
+
+    ws.onmessage = (e) => {
+      const tickers = JSON.parse(e.data);
+      const prices = {};
+      
+      tickers.forEach(ticker => {
+        if (ticker.s.endsWith('USDT')) {
+          const symbol = ticker.s.replace('USDT', '').toUpperCase();
+          prices[symbol] = {
+            price: parseFloat(ticker.c),
+            change: parseFloat(ticker.P)
+          };
+        }
+      });
+
+      setBinancePrices(prices);
+    };
+
+    return () => ws.close();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
+  // 3. Combinar datos de CoinGecko + Binance
+  const mergedCryptos = cryptos.map(coin => {
+    const binanceData = binancePrices[coin.symbol.toUpperCase()] || {};
+    return {
+      ...coin,
+      current_price: binanceData.price || coin.current_price,
+      price_change_percentage_24h: binanceData.change !== undefined 
+        ? binanceData.change 
+        : coin.price_change_percentage_24h,
+      isRealtime: !!binanceData.price
+    };
+  });
+
+  // 4. Cargar datos iniciales
+  useEffect(() => {
+    fetchCryptoData();
+  }, [fetchCryptoData]);
 
   return (
-  <section className="py-12 px-4 bg-gray-50 dark:bg-[--color-primary-dark]">
-    <div className="max-w-7xl mx-auto text-left">
-      <h2 className="text-3xl font-bold mb-8">
-        Monedas Principales (Tiempo Real)
-      </h2>
-      <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-        Última actualización: {lastUpdate.toLocaleTimeString()}
+    <section className="py-12 px-4 bg-gray-50 dark:bg-[--color-primary-dark]">
+      <div className="max-w-7xl mx-auto text-left">
+        <h2 className="text-3xl font-bold mb-8">
+          Todas las Criptomonedas (Top {mergedCryptos.length})
+          <span className="text-sm ml-2 text-green-500 animate-pulse">
+            • Actualización en tiempo real
+          </span>
+        </h2>
+
+        {loading ? (
+          <div className="text-center py-8">Cargando datos...</div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {mergedCryptos.map(coin => (
+                <CryptoCard
+                  key={coin.id}
+                  symbol={coin.symbol.toUpperCase()}
+                  price={coin.current_price}
+                  change={coin.price_change_percentage_24h}
+                  marketCap={coin.market_cap}
+                  image={coin.image}
+                  name={coin.name}
+                  isRealtime={coin.isRealtime}
+                />
+              ))}
+            </div>
+
+            <div className="flex justify-center mt-8 gap-4">
+              <button
+                onClick={() => setPage(p => Math.max(p - 1, 1))}
+                disabled={page === 1}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              >
+                Anterior
+              </button>
+              <button
+                onClick={() => setPage(p => p + 1)}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Siguiente
+              </button>
+            </div>
+          </>
+        )}
       </div>
-      
-      {/* Cambiado a solo 1 columna (una cripto por fila) */}
-      <div className="grid grid-cols-1 gap-6 justify-items-start"> {/* Solo grid-cols-1 */}
-        {Object.entries(cryptoData).map(([symbol, data]) => (
-          <CryptoCard 
-            key={symbol}
-            symbol={symbol}
-            price={data.price}
-            change={data.change}
-            marketCap={data.marketCap}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
 }
 
 export default CryptoStatus;
