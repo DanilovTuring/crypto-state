@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import CryptoCard from './CryptoCard';
+import React, { useEffect, useState, useCallback } from "react";
+import CryptoCard from "./CryptoCard";
+import Pagination from "./Pagination";
 
 function CryptoStatus() {
   const [cryptos, setCryptos] = useState([]);
@@ -17,7 +18,7 @@ function CryptoStatus() {
       const data = await res.json();
       setCryptos(data);
     } catch (err) {
-      console.error('Error fetching crypto data:', err);
+      console.error("Error fetching crypto data:", err);
     } finally {
       setLoading(false);
     }
@@ -25,18 +26,18 @@ function CryptoStatus() {
 
   // 2. Conexión WebSocket a Binance para precios en tiempo real
   useEffect(() => {
-    const ws = new WebSocket('wss://stream.binance.com:9443/ws/!ticker@arr');
+    const ws = new WebSocket("wss://stream.binance.com:9443/ws/!ticker@arr");
 
     ws.onmessage = (e) => {
       const tickers = JSON.parse(e.data);
       const prices = {};
-      
-      tickers.forEach(ticker => {
-        if (ticker.s.endsWith('USDT')) {
-          const symbol = ticker.s.replace('USDT', '').toUpperCase();
+
+      tickers.forEach((ticker) => {
+        if (ticker.s.endsWith("USDT")) {
+          const symbol = ticker.s.replace("USDT", "").toUpperCase();
           prices[symbol] = {
             price: parseFloat(ticker.c),
-            change: parseFloat(ticker.P)
+            change: parseFloat(ticker.P),
           };
         }
       });
@@ -48,15 +49,16 @@ function CryptoStatus() {
   }, []);
 
   // 3. Combinar datos de CoinGecko + Binance
-  const mergedCryptos = cryptos.map(coin => {
+  const mergedCryptos = cryptos.map((coin) => {
     const binanceData = binancePrices[coin.symbol.toUpperCase()] || {};
     return {
       ...coin,
       current_price: binanceData.price || coin.current_price,
-      price_change_percentage_24h: binanceData.change !== undefined 
-        ? binanceData.change 
-        : coin.price_change_percentage_24h,
-      isRealtime: !!binanceData.price
+      price_change_percentage_24h:
+        binanceData.change !== undefined
+          ? binanceData.change
+          : coin.price_change_percentage_24h,
+      isRealtime: !!binanceData.price,
     };
   });
 
@@ -66,8 +68,8 @@ function CryptoStatus() {
   }, [fetchCryptoData]);
 
   //definir paginas
-  const itemsPerPage = 11;
-  const start = (page-1) * itemsPerPage;
+  const itemsPerPage = 10;
+  const start = (page - 1) * itemsPerPage;
   const end = page * itemsPerPage;
   const paginatedCryptos = mergedCryptos.slice(start, end);
 
@@ -86,7 +88,7 @@ function CryptoStatus() {
         ) : (
           <>
             <div className="space-y-4">
-              {paginatedCryptos.map(coin => (
+              {paginatedCryptos.map((coin) => (
                 <CryptoCard
                   key={coin.id}
                   symbol={coin.symbol.toUpperCase()}
@@ -100,21 +102,13 @@ function CryptoStatus() {
               ))}
             </div>
 
-            <div className="flex justify-center mt-8 gap-4">
-              <button
-                onClick={() => setPage(p => Math.max(p - 1, 1))}
-                disabled={page === 1}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-              >
-                Anterior
-              </button>
-              <button
-                onClick={() => setPage(p => p + 1)}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Siguiente
-              </button>
-            </div>
+            {/* Paginación */}
+            <Pagination
+              currentPage={page}
+              totalItems={mergedCryptos.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={(newPage) => setPage(newPage)}
+            />
           </>
         )}
       </div>
