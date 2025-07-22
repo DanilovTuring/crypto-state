@@ -65,6 +65,12 @@ function CryptoStatus() {
     fetchCryptoData();
   }, [fetchCryptoData]);
 
+  //definir paginas
+  const itemsPerPage = 11;
+  const start = (page-1) * itemsPerPage;
+  const end = page * itemsPerPage;
+  const paginatedCryptos = mergedCryptos.slice(start, end);
+
   return (
     <section className="py-12 px-4 bg-gray-50 dark:bg-[--color-primary-dark]">
       <div className="max-w-7xl mx-auto text-left">
@@ -79,8 +85,8 @@ function CryptoStatus() {
           <div className="text-center py-8">Cargando datos...</div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {mergedCryptos.map(coin => (
+            <div className="space-y-4">
+              {paginatedCryptos.map(coin => (
                 <CryptoCard
                   key={coin.id}
                   symbol={coin.symbol.toUpperCase()}

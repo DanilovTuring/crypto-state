@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
 const CryptoCard = ({ symbol, name, price, change, marketCap, image }) => {
   const formatCurrency = (value, minDecimals = 2, maxDecimals = 8) => {
     if (value === undefined || value === null) return 'N/A';

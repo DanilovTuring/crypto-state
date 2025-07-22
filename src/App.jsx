@@ -15,6 +15,8 @@ function App() {
           <h1 className="text-4x1 font-bold">CryptoState</h1>
           <Home />
           <CryptoStatus />
+         
+
         </main>
     </div>
 
