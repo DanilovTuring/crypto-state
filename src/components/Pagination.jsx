@@ -40,15 +40,13 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-6 font-sans flex-wrap">
-      {/* Boton anterior */}
+    <div className="flex justify-center items-center gap-3 mt-6 font-sans flex-wrap bg-white">
+      {/* Botón Anterior */}
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="min-w-[110px] px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg
-         shadow-md hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed 
-         transition-all duration-300 ease-in-out transform hover:-translate-y-0.5"
-        arial-label="Página anterior"
+        className="min-w-[120px] px-4 py-2 bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-base font-semibold rounded-lg shadow-md hover:from-yellow-600 hover:to-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 ease-in-out transform hover:-translate-y-0.5"
+        aria-label="Página anterior"
       >
         <svg
           className="w-5 h-5 inline-block mr-2"
@@ -67,23 +65,26 @@ const Pagination = ({
         Anterior
       </button>
 
-      {/* Números de pagina */}
+      {/* Números de página */}
       <div className="flex gap-1">
         {pageNumbers.map((page, index) =>
           page === "..." ? (
-            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-500">
+            <span
+              key={`ellipsis-${index}`}
+              className="px-3 py-2 text-amber-500 text-base"
+            >
               ...
             </span>
           ) : (
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={` px-4 py-2 rounded-lg shadow-sm transition-all duration-300 ease-in-out ${
+              className={`px-4 py-2 rounded-lg shadow-sm transition-all duration-300 ease-in-out text-base font-semibold ${
                 currentPage === page
-                  ? "bg-indigo-600 text-white font-semibold"
-                  : "bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
+                  ? "bg-amber-600 text-white"
+                  : "bg-amber-50 text-gray-900 hover:bg-amber-100 hover:text-amber-700"
               }`}
-              arial-label={`Página ${page}`}
+              aria-label={`Página ${page}`}
             >
               {page}
             </button>
@@ -95,9 +96,8 @@ const Pagination = ({
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="min-w-[110px] px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg shadow-md hover:from-indigo-700
-        hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 ease-in-out transform hover:-translate-y-0.5"
-        arial-label="Página siguiente"
+        className="min-w-[120px] px-4 py-2 bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-base font-semibold rounded-lg shadow-md hover:from-yellow-600 hover:to-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 ease-in-out transform hover:-translate-y-0.5"
+        aria-label="Página siguiente"
       >
         Siguiente
         <svg
