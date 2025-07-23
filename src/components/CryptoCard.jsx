@@ -1,16 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-//Formatear valores unitarios
+// Formatear valores de la criptomoneda
 const formatCurrency = (value, minDecimals = 2, maxDecimals = 8) => {
   if (value === undefined || value === null) return "N/A";
-  return value.toLocaleString(undefined, {
+  return value.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
     minimumFractionDigits: minDecimals,
-    aximumFractionDigits: maxDecimals,
+    maximumFractionDigits: maxDecimals,
   });
 };
 
-//Formatear números grandes
+// Formatear números grandes
 const formatLargeNumber = (value) => {
   if (!value) return "N/A";
   if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
@@ -19,7 +21,7 @@ const formatLargeNumber = (value) => {
   return formatCurrency(value, 0, 0);
 };
 
-//Limpiar símbolo de la criptomoneda
+// Limpiar símbolo
 const cleanSymbol = (sym) => {
   if (!sym) return "---";
   const keepFullSymbol = ["USDT", "BTC", "ETH", "BNB", "XRP", "SOL", "DOGE"];
@@ -27,7 +29,7 @@ const cleanSymbol = (sym) => {
   return sym.replace(/(USDT|USD)$/gi, "").trim();
 };
 
-//Obtener ícono de cambio
+// Obtener ícono de cambio
 const getChangeIcon = (changeValue) => {
   if (changeValue === undefined || changeValue === null) return null;
   return changeValue >= 0 ? (
@@ -74,13 +76,11 @@ const CryptoCard = ({
 }) => {
   return (
     <div
-      className="flex items-center w-full py-4 px-6 bg-white rounded-lg
-    shadow-sm hover:shadow-sm hover:bg-amber-50/50 transition-all 
-    duration-300 group border-b border-gray-100"
+      className="flex items-center w-full py-4 px-6 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-amber-50/50 transition-all duration-300 group border-b border-gray-100"
       role="row"
       aria-label={`Información de ${name || symbol}, posición ${rank}`}
     >
-      {/* Conlumna Ranking */}
+      {/* Columna Ranking */}
       <div className="w-[60px] text-left">
         <span className="text-base font-semibold text-amber-600">#{rank}</span>
       </div>
@@ -93,14 +93,12 @@ const CryptoCard = ({
             `https://cryptocurrencyliveprices.com/img/${symbol.toLowerCase()}.png`
           }
           alt={`${name || symbol} logo`}
-          className="w-10 rounded-full border border-amber-300 object-cover
-          transition-transform duration-300 group-hover:scale-105"
+          className="w-10 h-10 rounded-full border border-amber-300 object-cover transition-transform duration-300 group-hover:scale-105"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "https://cryptocurrencyliveprices.com/img/coin.png";
           }}
         />
-
         <div className="flex-1">
           <span className="text-lg font-semibold text-gray-900 truncate">
             {name || "---"}
@@ -111,58 +109,44 @@ const CryptoCard = ({
         </div>
       </div>
 
-      {/* Columna Precio*/}
+      {/* Columna Precio */}
       <div className="w-1/5 min-w-[140px] text-right">
         <span className="text-base font-semibold text-gray-900">
           {price !== undefined ? formatCurrency(price) : "---"}
         </span>
       </div>
 
-      <div>
-        <p className="text-lg font-semibold text-gray-800 dark:text-white truncate">
-          {name}
-        </p>
-        <h3 className="text-sm text-gray-500 dark:text-gray-400 truncate">
-          {cleanSymbol(symbol)}
-        </h3>
-      </div>
-
-      {/* Body */}
-      <div className="flex-grow space-y-2">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-500 dark:text-gray-400">Precio:</span>
-          <span className="font-medium">
-            {price !== undefined ? `$${formatCurrency(price)}` : "---"}
+      {/* Columna Cambio 24h */}
+      <div className="w-1/5 min-w-[140px] text-right">
+        {change !== undefined && change !== null ? (
+          <span
+            className={`text-base font-semibold flex items-center justify-end gap-1.5 ${
+              change >= 0 ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {getChangeIcon(change)} {Math.abs(change).toFixed(2)}%
           </span>
-        </div>
-
-        {change !== undefined && change !== null && (
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 dark:text-gray-400">
-              Cambio (24h):
-            </span>
-            <span
-              className={`font-medium ${
-                change >= 0 ? "text-green-500" : "text-red-500"
-              }`}
-            >
-              {Math.abs(change).toFixed(2)}%
-            </span>
-          </div>
+        ) : (
+          <span className="text-base text-gray-500">---</span>
         )}
       </div>
 
-      {/* Footer */}
-      {marketCap && (
-        <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-500 dark:text-gray-400">
-              Market Cap:
-            </span>
-            <span>{formatLargeNumber(marketCap)}</span>
-          </div>
-        </div>
-      )}
+      {/* Columna Market Cap */}
+      <div className="w-1/5 min-w-[140px] text-right">
+        <span className="text-base font-semibold text-gray-900">
+          {formatLargeNumber(marketCap)}
+        </span>
+      </div>
+
+      {/* Columna  Botón */}
+      <div className="w-[120px] text-right">
+        <button
+          className="py-2 px-4 bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-sm font-semibold rounded-md hover:from-yellow-600 hover:to-amber-700 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm"
+          aria-label={`Ver detalles de ${name || symbol}, posición ${rank}`}
+        >
+          Detalles
+        </button>
+      </div>
     </div>
   );
 };
@@ -174,6 +158,7 @@ CryptoCard.propTypes = {
   change: PropTypes.number,
   marketCap: PropTypes.number,
   image: PropTypes.string,
+  rank: PropTypes.number.isRequired,
 };
 
 CryptoCard.defaultProps = {
@@ -182,6 +167,7 @@ CryptoCard.defaultProps = {
   change: undefined,
   marketCap: undefined,
   image: undefined,
+  rank: 1,
 };
 
 export default CryptoCard;
