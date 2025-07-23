@@ -7,24 +7,33 @@ function CryptoStatus() {
   const [binancePrices, setBinancePrices] = useState({});
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // 1. Obtener datos estáticos de CoinGecko (metadata, market cap, etc.)
+  //  250 criptomonedas principales de CoinGecko
   const fetchCryptoData = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const res = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}`
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1"
       );
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
       const data = await res.json();
       setCryptos(data);
     } catch (err) {
       console.error("Error fetching crypto data:", err);
+      setError(
+        "No se pudieron cargar los datos de las criptomonedas. Por favor, intenta de nuevo."
+      );
+      setCryptos([]);
     } finally {
       setLoading(false);
     }
-  }, [page]);
+  }, []);
 
-  // 2. Conexión WebSocket a Binance para precios en tiempo real
+  // Conexión WebSocket a Binance para precios en tiempo real
   useEffect(() => {
     const ws = new WebSocket("wss://stream.binance.com:9443/ws/!ticker@arr");
 
@@ -48,7 +57,7 @@ function CryptoStatus() {
     return () => ws.close();
   }, []);
 
-  // 3. Combinar datos de CoinGecko + Binance
+  // Datos de CoinGecko + Binance
   const mergedCryptos = cryptos.map((coin) => {
     const binanceData = binancePrices[coin.symbol.toUpperCase()] || {};
     return {
@@ -62,47 +71,59 @@ function CryptoStatus() {
     };
   });
 
-  // 4. Cargar datos iniciales
+  // Cargar datos iniciales
   useEffect(() => {
     fetchCryptoData();
   }, [fetchCryptoData]);
 
-  //definir paginas
+  // Definir paginación
   const itemsPerPage = 10;
   const start = (page - 1) * itemsPerPage;
   const end = page * itemsPerPage;
   const paginatedCryptos = mergedCryptos.slice(start, end);
 
   return (
-    <section className="py-12 px-4 bg-gray-50 dark:bg-[--color-primary-dark]">
-      <div className="max-w-7xl mx-auto text-left">
-        <h2 className="text-3xl font-bold mb-8">
-          Todas las Criptomonedas (Top {mergedCryptos.length})
-          <span className="text-sm ml-2 text-green-500 animate-pulse">
+    <section className="py-12 px-4 bg-white">
+      <div className="max-w-6xl mx-auto text-left">
+        <h2 className="text-4xl font-bold font-sans mb-8 text-gray-900 text-center">
+          {mergedCryptos.length} Criptomonedas en el Mercado
+          <span className="block text-base ml-3 text-green-600 animate-pulse text-center">
             • Actualización en tiempo real
           </span>
         </h2>
 
         {loading ? (
-          <div className="text-center py-8">Cargando datos...</div>
+          <div className="text-center py-8 text-lg font-semibold text-gray-900">
+            Cargando datos...
+          </div>
+        ) : error ? (
+          <div className="text-center py-8 text-lg font-semibold text-red-600">
+            {error}
+          </div>
         ) : (
           <>
-            <div className="space-y-4">
-              {paginatedCryptos.map((coin) => (
-                <CryptoCard
-                  key={coin.id}
-                  symbol={coin.symbol.toUpperCase()}
-                  price={coin.current_price}
-                  change={coin.price_change_percentage_24h}
-                  marketCap={coin.market_cap}
-                  image={coin.image}
-                  name={coin.name}
-                  isRealtime={coin.isRealtime}
-                />
-              ))}
+            <div className="space-y-2">
+              {paginatedCryptos.length > 0 ? (
+                paginatedCryptos.map((coin, index) => (
+                  <CryptoCard
+                    key={coin.id}
+                    rank={start + index + 1}
+                    symbol={coin.symbol.toUpperCase()}
+                    price={coin.current_price}
+                    change={coin.price_change_percentage_24h}
+                    marketCap={coin.market_cap}
+                    image={coin.image}
+                    name={coin.name}
+                    isRealtime={coin.isRealtime}
+                  />
+                ))
+              ) : (
+                <div className="text-center py-8 text-lg font-semibold text-gray-900">
+                  No hay datos disponibles.
+                </div>
+              )}
             </div>
 
-            {/* Paginación */}
             <Pagination
               currentPage={page}
               totalItems={mergedCryptos.length}

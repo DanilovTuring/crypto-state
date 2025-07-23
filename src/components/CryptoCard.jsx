@@ -86,7 +86,8 @@ const CryptoCard = ({
       </div>
 
       {/* Columna Logo y Nombre */}
-      <div className="flex items-center w-1/5 min-w-[220px] space-x-4">
+
+      <div className="flex items-center w-1/5 min-w-[200px] sm:min-w-[220px] space-x-4">
         <img
           src={
             image ||
@@ -99,11 +100,11 @@ const CryptoCard = ({
             e.target.src = "https://cryptocurrencyliveprices.com/img/coin.png";
           }}
         />
-        <div className="flex-1">
-          <span className="text-lg font-semibold text-gray-900 truncate">
+        <div className="flex-1 overflow-hidden">
+          <span className="text-lg font-semibold text-gray-900 line-clamp-2">
             {name || "---"}
           </span>
-          <span className="text-sm text-gray-500 block">
+          <span className="text-sm text-gray-500 block truncate">
             {cleanSymbol(symbol)}
           </span>
         </div>
