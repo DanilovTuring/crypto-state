@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import BuyButton from "./BuyButton";
 // Formatear valores de la criptomoneda
 const formatCurrency = (value, minDecimals = 2, maxDecimals = 8) => {
   if (value === undefined || value === null) return "N/A";
@@ -141,12 +141,7 @@ const CryptoCard = ({
 
       {/* Columna  Botón */}
       <div className="w-[120px] text-right">
-        <button
-          className="py-2 px-4 bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-sm font-semibold rounded-md hover:from-yellow-600 hover:to-amber-700 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm"
-          aria-label={`Ver detalles de ${name || symbol}, posición ${rank}`}
-        >
-          Detalles
-        </button>
+        <BuyButton symbol={symbol} name={name} rank={rank} />
       </div>
     </div>
   );
