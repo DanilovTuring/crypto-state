@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import BuyButton from "./BuyButton";
-// Formatear valores de la criptomoneda
+
 const formatCurrency = (value, minDecimals = 2, maxDecimals = 8) => {
   if (value === undefined || value === null) return "N/A";
   return value.toLocaleString("en-US", {
@@ -12,7 +12,6 @@ const formatCurrency = (value, minDecimals = 2, maxDecimals = 8) => {
   });
 };
 
-// Formatear números grandes
 const formatLargeNumber = (value) => {
   if (!value) return "N/A";
   if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
@@ -21,7 +20,6 @@ const formatLargeNumber = (value) => {
   return formatCurrency(value, 0, 0);
 };
 
-// Limpiar símbolo
 const cleanSymbol = (sym) => {
   if (!sym) return "---";
   const keepFullSymbol = ["USDT", "BTC", "ETH", "BNB", "XRP", "SOL", "DOGE"];
@@ -29,12 +27,11 @@ const cleanSymbol = (sym) => {
   return sym.replace(/(USDT|USD)$/gi, "").trim();
 };
 
-// Obtener ícono de cambio
 const getChangeIcon = (changeValue) => {
   if (changeValue === undefined || changeValue === null) return null;
   return changeValue >= 0 ? (
     <svg
-      className="w-4 h-4 inline-block mr-1.5 group-hover:bg-amber-50 rounded"
+      className="w-4 h-4 inline-block mr-1"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -49,7 +46,7 @@ const getChangeIcon = (changeValue) => {
     </svg>
   ) : (
     <svg
-      className="w-4 h-4 inline-block mr-1.5 group-hover:bg-amber-50 rounded"
+      className="w-4 h-4 inline-block mr-1"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -73,6 +70,7 @@ const CryptoCard = ({
   marketCap,
   image,
   rank,
+  isRealtime,
 }) => {
   return (
     <div
@@ -80,13 +78,13 @@ const CryptoCard = ({
       role="row"
       aria-label={`Información de ${name || symbol}, posición ${rank}`}
     >
-      {/* Columna Ranking */}
+      {/* Columna Ranking (Fija) */}
       <div className="w-[50px] sm:w-[60px] text-left sticky left-0 bg-white z-10">
-        <span className="text-base font-semibold text-amber-600">#{rank}</span>
+        <span className="text-sm sm:text-base font-semibold text-amber-600">
+          #{rank}
+        </span>
       </div>
-
-      {/* Columna Logo y Nombre */}
-
+      {/* Columna Logo y Nombre (Fija) */}
       <div className="w-[120px] sm:w-1/4 flex items-center space-x-2 sticky left-[50px] sm:left-[60px] bg-white z-10">
         <img
           src={
@@ -94,7 +92,7 @@ const CryptoCard = ({
             `https://cryptocurrencyliveprices.com/img/${symbol.toLowerCase()}.png`
           }
           alt={`${name || symbol} logo`}
-          className="w-8 sm:w-10 h-8 sm:h-10 rounded-full border border-amber-300 object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-6 sm:w-8 h-6 sm:h-8 rounded-full border border-amber-300 object-cover transition-transform duration-300 group-hover:scale-105"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "https://cryptocurrencyliveprices.com/img/coin.png";
@@ -109,39 +107,38 @@ const CryptoCard = ({
           </span>
         </div>
       </div>
-
-      {/* Columna Precio */}
-      <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
-        <span className="text-sm sm:text-base font-semibold text-gray-900 w-full text-left pl-8 ml-32">
-          {price !== undefined ? formatCurrency(price) : "---"}
-        </span>
-      </div>
-
-      {/* Columna Cambio 24h */}
-      <div className="w-1/5 min-w-[140px] text-right">
-        {change !== undefined && change !== null ? (
-          <span
-            className={`text-base font-semibold flex items-center justify-end gap-1.5 ${
-              change >= 0 ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {getChangeIcon(change)} {Math.abs(change).toFixed(2)}%
+      {/* Columnas desplazables */}
+      <div className="flex flex-1">
+        {/* Columna Precio */}
+        <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
+          <span className="text-sm sm:text-base font-semibold text-gray-900">
+            {price !== undefined ? formatCurrency(price) : "---"}
           </span>
-        ) : (
-          <span className="text-base text-gray-500">---</span>
-        )}
-      </div>
-
-      {/* Columna Market Cap */}
-      <div className="w-1/5 min-w-[140px] text-right">
-        <span className="text-base font-semibold text-gray-900">
-          {formatLargeNumber(marketCap)}
-        </span>
-      </div>
-
-      {/* Columna  Botón */}
-      <div className="w-[120px] text-right">
-        <BuyButton symbol={symbol} name={name} rank={rank} />
+        </div>
+        {/* Columna Cambio 24h */}
+        <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
+          {change !== undefined && change !== null ? (
+            <span
+              className={`text-sm sm:text-base font-semibold flex items-center justify-start sm:justify-end gap-1 ${
+                change >= 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {getChangeIcon(change)} {Math.abs(change).toFixed(2)}%
+            </span>
+          ) : (
+            <span className="text-sm sm:text-base text-gray-500">---</span>
+          )}
+        </div>
+        {/* Columna Market Cap */}
+        <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
+          <span className="text-sm sm:text-base font-semibold text-gray-900">
+            {formatLargeNumber(marketCap)}
+          </span>
+        </div>
+        {/* Columna Botón */}
+        <div className="w-[80px] sm:w-[120px] text-left sm:text-right">
+          <BuyButton symbol={symbol} name={name} rank={rank} />
+        </div>
       </div>
     </div>
   );
@@ -155,6 +152,7 @@ CryptoCard.propTypes = {
   marketCap: PropTypes.number,
   image: PropTypes.string,
   rank: PropTypes.number.isRequired,
+  isRealtime: PropTypes.bool,
 };
 
 CryptoCard.defaultProps = {
@@ -164,6 +162,7 @@ CryptoCard.defaultProps = {
   marketCap: undefined,
   image: undefined,
   rank: 1,
+  isRealtime: false,
 };
 
 export default CryptoCard;
