@@ -151,9 +151,11 @@ const BuyButton = ({ symbol, name, rank }) => {
               </svg>
             </div>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl sm:text-2x1 font-bold text-gray-900">
-                Redirigiendo a Binance
-              </h3>
+              <div className="flex-1 flex justify-center">
+                <h3 className="text-center text-xl sm:text-2xl font-bold text-gray-900">
+                  Redirigiendo a Binance
+                </h3>
+              </div>
               <button
                 onClick={handleClose}
                 className="text-gray-500 hover:text-gray-700"
@@ -175,12 +177,12 @@ const BuyButton = ({ symbol, name, rank }) => {
                 </svg>
               </button>
             </div>
-            <p className="text-base text-gray-700 mb-6">
+            <p className="text-base text-gray-700 mb-6 text-center">
               Hola! Al continuar serás redirigido a la pagina oficial de Binance
               para comprar {name || symbol}, te informamos que no generamos
               ganancias ni comisiones!
             </p>
-            <div className="flex justify-end space-x-4">
+            <div className="flex justify-center space-x-4">
               <button
                 onClick={handleClose}
                 className="py-2 px-4 bg-gray-100 text-gray-700
