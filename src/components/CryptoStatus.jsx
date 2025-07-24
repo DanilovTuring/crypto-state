@@ -86,7 +86,8 @@ function CryptoStatus() {
     <section className="py-12 px-4 bg-white">
       <div className="max-w-6xl mx-auto text-left">
         <h2 className="text-4xl font-bold font-sans mb-8 text-gray-900 text-center">
-          {mergedCryptos.length} Criptomonedas en el Mercado
+          Ranking de las {mergedCryptos.length} Criptomonedas Líderes en el
+          Mercado Global
           <span className="block text-base ml-3 text-green-600 animate-pulse text-center">
             • Actualización en tiempo real
           </span>
