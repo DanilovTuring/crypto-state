@@ -111,8 +111,8 @@ const CryptoCard = ({
       </div>
 
       {/* Columna Precio */}
-      <div className="w-1/5 min-w-[140px] text-right">
-        <span className="text-base font-semibold text-gray-900">
+      <div className="w-1/5 min-w-[140px] flex">
+        <span className="text-base font-semibold text-gray-900 w-full text-left pl-8 ml-32">
           {price !== undefined ? formatCurrency(price) : "---"}
         </span>
       </div>
