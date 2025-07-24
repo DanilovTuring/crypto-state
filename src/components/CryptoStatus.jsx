@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import CryptoCard from "./CryptoCard";
 import Pagination from "./Pagination";
+import TableHeader from "./TableHeader";
 
 function CryptoStatus() {
   const [cryptos, setCryptos] = useState([]);
@@ -85,10 +86,9 @@ function CryptoStatus() {
   return (
     <section className="py-12 px-4 bg-white">
       <div className="max-w-6xl mx-auto text-left">
-        <h2 className="text-4xl font-bold font-sans mb-8 text-gray-900 text-center">
-          Ranking de las {mergedCryptos.length} Criptomonedas Líderes en el
-          Mercado Global
-          <span className="block text-base ml-3 text-green-600 animate-pulse text-center">
+        <h2 className="text-4xl font-bold font-sans mb-8 text-black text-center">
+          Criptomonedas Líderes en el Mercado Global
+          <span className="block text-base ml-3 text-amber-600 animate-pulse text-center">
             • Actualización en tiempo real
           </span>
         </h2>
@@ -104,6 +104,7 @@ function CryptoStatus() {
         ) : (
           <>
             <div className="space-y-2">
+              <TableHeader />
               {paginatedCryptos.length > 0 ? (
                 paginatedCryptos.map((coin, index) => (
                   <CryptoCard
