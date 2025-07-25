@@ -74,18 +74,18 @@ const CryptoCard = ({
 }) => {
   return (
     <div
-      className="flex w-full py-2 px-3 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-amber-50/50 transition-all duration-300 group"
+      className="flex w-[900px] py-2 px-3 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-amber-50/50 transition-all duration-300 group sm:w-full sm:overflow-x-auto"
       role="row"
       aria-label={`Información de ${name || symbol}, posición ${rank}`}
     >
       {/* Columna Ranking (Fija) */}
-      <div className="w-[50px] sm:w-[60px] text-left sticky left-0 bg-white z-10">
+      <div className="w-[60px] text-left sticky left-0 bg-white z-10">
         <span className="text-sm sm:text-base font-semibold text-amber-600">
           #{rank}
         </span>
       </div>
       {/* Columna Logo y Nombre (Fija) */}
-      <div className="w-[120px] sm:w-1/4 flex items-center space-x-2 sticky left-[50px] sm:left-[60px] bg-white z-10">
+      <div className="w-[200px] flex items-center space-x-2 sticky left-[60px] bg-white z-10">
         <img
           src={
             image ||
@@ -108,18 +108,18 @@ const CryptoCard = ({
         </div>
       </div>
       {/* Columnas desplazables */}
-      <div className="flex flex-1">
-        <div className="w-1/5 min-w-[140px] flex">
-          <span className="text-base font-semibold text-gray-900 w-full text-left">
+      <div className="flex sm:min-w-[600px]">
+        {/* Columna Precio (Movida 8px a la izquierda en móvil) */}
+        <div className="w-[140px] text-right sm:-ml-2">
+          <span className="text-sm sm:text-base font-semibold text-gray-900">
             {price !== undefined ? formatCurrency(price) : "---"}
           </span>
         </div>
-
         {/* Columna Cambio 24h */}
-        <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
+        <div className="w-[140px] text-right">
           {change !== undefined && change !== null ? (
             <span
-              className={`text-sm sm:text-base font-semibold flex items-center justify-start sm:justify-end gap-1 ${
+              className={`text-sm sm:text-base font-semibold flex items-center justify-end gap-1 ${
                 change >= 0 ? "text-green-600" : "text-red-600"
               }`}
             >
@@ -130,13 +130,13 @@ const CryptoCard = ({
           )}
         </div>
         {/* Columna Market Cap */}
-        <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
+        <div className="w-[140px] text-right">
           <span className="text-sm sm:text-base font-semibold text-gray-900">
             {formatLargeNumber(marketCap)}
           </span>
         </div>
         {/* Columna Botón */}
-        <div className="w-[80px] sm:w-[120px] text-left sm:text-right">
+        <div className="w-[120px] text-right">
           <BuyButton symbol={symbol} name={name} rank={rank} />
         </div>
       </div>
