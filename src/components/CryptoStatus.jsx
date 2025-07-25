@@ -85,7 +85,7 @@ function CryptoStatus() {
 
   return (
     <section className="py-8 px-3 sm:px-4 bg-white w-full overflow-x-hidden">
-      <div className="max-w-6xl mx-auto w-full lg:w-[900px] lg:ml-[18%] lg:mr-auto">
+      <div className="max-w-6xl mx-auto w-full lg:w-[900px] lg:ml-[19%] lg:mr-auto">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold font-sans mb-6 text-black text-center">
           Criptomonedas Líderes en el Mercado Global
           <span className="block text-xs sm:text-sm text-amber-600 animate-pulse text-center mt-1">
