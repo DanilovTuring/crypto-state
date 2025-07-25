@@ -3,6 +3,7 @@ import React from "react";
 function Home() {
   return (
     <section
+      id="home"
       className="relative px-4 py-16 md:py-24 bg-gradient-to-br from-purple-600 to-purple-800
        dark:from-purple-700 dark:to-purple-900 text-gray-900 dark:text-white overflow-hidden"
     >

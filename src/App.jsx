@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import CryptoStatus from "./components/CryptoStatus";
 import NewsPage from "./pages/NewsPage";
+
 function App() {
   return (
     <div className="">

@@ -25,28 +25,26 @@ function Navbar() {
           {/* Menú en escritorio */}
           <div className="hidden md:flex items-center space-x-6">
             <a
-              href="#"
+              href="#home"
               className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up animation-delay-200"
             >
               Inicio
             </a>
             <a
-              href="#"
+              href="https://academy.binance.com/es"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up animation-delay-300"
             >
-              Mercados
+              Aprender Más
             </a>
             <a
-              href="#"
+              href="https://www.binance.com/en/buy-sell-crypto"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up animation-delay-400"
             >
-              Portafolio
-            </a>
-            <a
-              href="#"
-              className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up animation-delay-500"
-            >
-              Contacto
+              Comprar Crypto
             </a>
           </div>
           {/* Botón hamburguesa para móvil */}
