@@ -7,7 +7,7 @@ const TableHeader = () => {
       role="row"
       aria-label="Encabezado de tabla de criptomonedas"
     >
-      {/* Columna Ranking (Fija) */}
+      {/* Columna Ranking (Fija)*/}
       <div className="w-[50px] sm:w-[60px] text-left sticky left-0 bg-white z-10">
         <span>Nº</span>
       </div>
