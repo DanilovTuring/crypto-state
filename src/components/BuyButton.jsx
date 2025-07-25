@@ -114,7 +114,7 @@ const BuyButton = ({ symbol, name, rank }) => {
     <>
       <button
         onClick={handleButtonClick}
-        className="py-2 px-4 bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-sm font-semibold rounded-md hover:from-yellow-600 hover:to-amber-700 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm"
+        className="py-2 px-6 text-yellow-600 border border-yellow-500 text-sm font-semibold rounded-full hover:bg-yellow-500 hover:text-white transition-all duration-300 ml-14"
         aria-label={`Abrir modal para comprar ${
           name || symbol
         } en Binance, posición ${rank}`}

@@ -28,7 +28,7 @@ function Home() {
         animated-fade-in-up animation-delay-200"
         >
           Tu plataforma líder para rastrear criptomonedas en tiempo real con
-          datos preciso y actualizados.
+          datos precisos y actualizados.
         </p>
 
         {/* Action Buttons */}
