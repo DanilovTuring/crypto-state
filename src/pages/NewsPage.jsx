@@ -71,9 +71,9 @@ const NewsPage = () => {
         label: "Votos",
         data: sortedNews.map((item) => item.score),
         backgroundColor: darkMode
-          ? "rgba(29, 161, 242, 0.6)"
-          : "rgba(29, 161, 242, 0.8)",
-        borderColor: darkMode ? "#1DA1F2" : "#1A91DA",
+          ? "rgba(234, 179, 8, 0.6)"
+          : "rgba(234, 179, 8, 0.8)",
+        borderColor: darkMode ? "#EAB308" : "#CA8A04",
         borderWidth: 1,
       },
     ],
@@ -85,30 +85,30 @@ const NewsPage = () => {
     plugins: {
       legend: {
         labels: {
-          color: darkMode ? "#E2E8F0" : "#1A202C",
+          color: darkMode ? "#E2E8F0" : "#F7FAFC",
           font: { family: "Inter", size: 12 },
         },
       },
       title: {
         display: true,
         text: "Votos por Noticia",
-        color: darkMode ? "#E2E8F0" : "#1A202C",
+        color: darkMode ? "#E2E8F0" : "#F7FAFC",
         font: { family: "Inter", size: 16, weight: "600" },
       },
       tooltip: {
-        backgroundColor: darkMode ? "#2D3748" : "#FFFFFF",
-        titleColor: darkMode ? "#E2E8F0" : "#1A202C",
-        bodyColor: darkMode ? "#E2E8F0" : "#1A202C",
+        backgroundColor: darkMode ? "#2D3748" : "#1E3A8A",
+        titleColor: "#F7FAFC",
+        bodyColor: "#F7FAFC",
       },
     },
     scales: {
       x: {
-        ticks: { color: darkMode ? "#E2E8F0" : "#1A202C" },
-        grid: { color: darkMode ? "#4A5568" : "#E2E8F0" },
+        ticks: { color: darkMode ? "#E2E8F0" : "#F7FAFC" },
+        grid: { color: darkMode ? "#4A5568" : "#6B7280" },
       },
       y: {
-        ticks: { color: darkMode ? "#E2E8F0" : "#1A202C" },
-        grid: { color: darkMode ? "#4A5568" : "#E2E8F0" },
+        ticks: { color: darkMode ? "#E2E8F0" : "#F7FAFC" },
+        grid: { color: darkMode ? "#4A5568" : "#6B7280" },
         beginAtZero: true,
       },
     },
@@ -126,12 +126,37 @@ const NewsPage = () => {
 
   return (
     <div
-      className={`min-h-screen ${
-        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"
-      } py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300`}
+      className={`min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-cover bg-center bg-no-repeat relative ${
+        darkMode ? "text-gray-100" : "text-gray-100"
+      } transition-colors duration-300`}
+      style={{
+        backgroundImage: `
+          linear-gradient(135deg, #1E3A8A 0%, #6B21A8 50%, #1E3A8A 100%),
+          url('https://images.unsplash.com/photo-1620321023374-d1a68a79f977?q=80&w=1000&auto=format&fit=crop')
+        `,
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+        backgroundBlendMode: "overlay",
+      }}
     >
       <style>
         {`
+          @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          div {
+            animation: gradientShift 15s ease infinite;
+            background-size: 200% 200%;
+          }
+          .crypto-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+            z-index: 0;
+          }
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -140,7 +165,7 @@ const NewsPage = () => {
             animation: fadeIn 0.3s ease-out;
           }
           .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.2) 75%);
             background-size: 200% 100%;
             animation: skeleton-loading 1.5s infinite;
           }
@@ -150,16 +175,14 @@ const NewsPage = () => {
           }
         `}
       </style>
-      <div className="max-w-6xl mx-auto">
+      <div className="crypto-overlay::before" />
+      <div className="relative z-10 max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1
-            id="newspage"
-            className="text-3xl sm:text-4xl font-bold text-center font-[Inter]"
-          >
+          <h1 className="text-3xl sm:text-4xl font-bold text-center font-[Inter]">
             Crypto News Reddit
           </h1>
           <button
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="p-2 rounded-full bg-white/20 dark:bg-gray-700/20 text-white hover:bg-white/30 dark:hover:bg-gray-600/30 transition-colors"
             onClick={toggleDarkMode}
           >
             <svg
@@ -187,7 +210,7 @@ const NewsPage = () => {
           </button>
         </div>
         {success && (
-          <div className="fixed top-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-lg animate-fade-in z-10">
+          <div className="fixed top-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-lg animate-fade-in z-20">
             <svg
               className="w-5 h-5 inline mr-2"
               fill="none"
@@ -205,7 +228,7 @@ const NewsPage = () => {
           </div>
         )}
         {error && (
-          <div className="fixed top-4 right-4 bg-red-500 text-white p-3 rounded-lg shadow-lg animate-fade-in z-10">
+          <div className="fixed top-4 right-4 bg-red-500 text-white p-3 rounded-lg shadow-lg animate-fade-in z-20">
             <svg
               className="w-5 h-5 inline mr-2"
               fill="none"
@@ -226,10 +249,8 @@ const NewsPage = () => {
           <button
             className={`px-4 py-2 rounded-full font-semibold text-sm transition-colors duration-200 ${
               sortBy === "score"
-                ? "bg-blue-500 text-white"
-                : darkMode
-                ? "bg-gray-700 text-gray-100 hover:bg-gray-600"
-                : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                ? "bg-yellow-500 text-gray-900"
+                : "bg-white/20 text-white hover:bg-white/30"
             }`}
             onClick={() => setSortBy("score")}
           >
@@ -238,18 +259,16 @@ const NewsPage = () => {
           <button
             className={`px-4 py-2 rounded-full font-semibold text-sm transition-colors duration-200 ${
               sortBy === "title"
-                ? "bg-blue-500 text-white"
-                : darkMode
-                ? "bg-gray-700 text-gray-100 hover:bg-gray-600"
-                : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                ? "bg-yellow-500 text-gray-900"
+                : "bg-white/20 text-white hover:bg-white/30"
             }`}
             onClick={() => setSortBy("title")}
           >
             Ordenar por Título
           </button>
         </div>
-        <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-          <h2 className="text-xl font-semibold mb-4 font-[Inter]">
+        <div className="mb-8 bg-white/90 dark:bg-gray-800/90 rounded-lg p-6 shadow-sm backdrop-blur-md">
+          <h2 className="text-xl font-semibold mb-4 font-[Inter] text-white">
             Estadísticas de Votos
           </h2>
           <div className="h-80">
@@ -263,7 +282,7 @@ const NewsPage = () => {
                 .map((_, index) => (
                   <li
                     key={index}
-                    className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
+                    className="p-6 bg-white/90 dark:bg-gray-800/90 rounded-lg shadow-sm backdrop-blur-md"
                   >
                     <div className="h-6 w-3/4 mb-4 skeleton rounded"></div>
                     <div className="h-4 w-1/2 mb-2 skeleton rounded"></div>
@@ -274,22 +293,22 @@ const NewsPage = () => {
             : sortedNews.map((item, index) => (
                 <li
                   key={index}
-                  className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                  className="p-6 bg-white/90 dark:bg-gray-800/90 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 backdrop-blur-md"
                 >
                   <a
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-lg font-semibold text-blue-500 hover:text-blue-400 transition-colors duration-200"
+                    className="text-lg font-semibold text-yellow-400 hover:text-yellow-300 transition-colors duration-200"
                   >
                     {item.title}
                   </a>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 font-[Inter]">
+                  <p className="text-sm text-gray-200 mt-2 font-[Inter]">
                     <span className="font-medium">Autor:</span> {item.author} |{" "}
                     <span className="font-medium">Votos:</span> {item.score}
                   </p>
                   <button
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-full font-semibold text-sm hover:bg-blue-600 transition-colors duration-200 flex items-center"
+                    className="mt-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-full font-semibold text-sm hover:bg-yellow-400 transition-colors duration-200 flex items-center"
                     onClick={() => copyToClipboard(item.url)}
                   >
                     <svg
