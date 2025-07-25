@@ -37,7 +37,7 @@ function Home() {
         gap-4 animate-fade-in-up animation-delay-400"
         >
           <a
-            href="#"
+            href="#cryptoscard"
             className="inline-block px-8 py-3 bg-amber-600 text-white 
             font-semibold rounded-lg shadow-md hover:bg-amber-700 dark:bg-amber-500
             dark:hover:bg-amber-600 trnasition-colors duration-200"
@@ -46,12 +46,12 @@ function Home() {
             Comenzar
           </a>
           <a
-            href="#"
+            href="#newspage"
             className="inline-block px-8 py-3 bg-transparent border-2 border-amber-400 text-amber-400 font-semibold rounded-lg hover:bg-amber-400 hover:text-white
              dark:hover:bg-amber-500 dark:hover:text-white transition-colors duration-200"
             aria-label="Aprender más sobre CryptoState"
           >
-            Aprender Más
+            Noticias
           </a>
         </div>
       </div>
