@@ -85,32 +85,29 @@ function Navbar() {
           <div className="md:hidden bg-gradient-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-900 shadow-md">
             <div className="flex flex-col space-y-4 px-4 py-4">
               <a
-                href="#"
+                href="#home"
                 className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up"
                 onClick={toggleMenu}
               >
                 Inicio
               </a>
               <a
-                href="#"
+                href="https://academy.binance.com/es"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up animation-delay-100"
                 onClick={toggleMenu}
               >
-                Mercados
+                Aprender Más
               </a>
               <a
-                href="#"
+                href="https://www.binance.com/en/buy-sell-crypto"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up animation-delay-200"
                 onClick={toggleMenu}
               >
-                Portafolio
-              </a>
-              <a
-                href="#"
-                className="text-gray-200 dark:text-gray-100 hover:text-amber-400 dark:hover:text-amber-400 font-semibold text-sm transition-colors duration-200 animate-fade-in-up animation-delay-300"
-                onClick={toggleMenu}
-              >
-                Contacto
+                Comprar Crypto
               </a>
             </div>
           </div>
