@@ -40,7 +40,7 @@ const Footer = ({ darkMode = false }) => {
         </p>
         <div className="flex justify-center mb-8">
           <a
-            href="https://github.com"
+            href="https://github.com/DanilovTuring/crypto-state"
             target="_blank"
             rel="noopener noreferrer"
             className="github-link text-amber-400 hover:text-amber-300 transition-all duration-200"
