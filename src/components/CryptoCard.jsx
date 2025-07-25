@@ -109,12 +109,12 @@ const CryptoCard = ({
       </div>
       {/* Columnas desplazables */}
       <div className="flex flex-1">
-        {/* Columna Precio */}
-        <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
-          <span className="text-sm sm:text-base font-semibold text-gray-900">
+        <div className="w-1/5 min-w-[140px] flex">
+          <span className="text-base font-semibold text-gray-900 w-full text-left">
             {price !== undefined ? formatCurrency(price) : "---"}
           </span>
         </div>
+
         {/* Columna Cambio 24h */}
         <div className="w-[80px] sm:w-1/5 text-left sm:text-right">
           {change !== undefined && change !== null ? (
