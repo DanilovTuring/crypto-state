@@ -14,7 +14,7 @@ function Navbar() {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img
-              src="\Logo1.png"
+              src="/Logo1.png"
               alt="CryptoState logo"
               className="w-10 h-10 rounded-full shadow-md border border-amber-400"
             />

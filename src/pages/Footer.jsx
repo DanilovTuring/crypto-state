@@ -26,7 +26,7 @@ const Footer = ({ darkMode = false }) => {
         <div className="mb-8">
           <div className="logo-container inline-block rounded-full p-1 border-2">
             <img
-              src="public\Logo1.png"
+              src="/Logo1.png"
               alt="CryptoState Logo"
               className="-10 h-10 rounded-full shadow-md border border-amber-400"
             />
