@@ -117,7 +117,7 @@ const NewsPage = () => {
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between mb-8 gap-4 items-center">
           <h1
-            id="cryptoLife"
+            id="newspage"
             className="text-3xl sm:text-4xl font-extrabold text-amber-400 tracking-tight text-center animate-fade-in-up"
           >
             CryptoNews
