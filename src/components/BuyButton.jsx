@@ -178,9 +178,9 @@ const BuyButton = ({ symbol, name, rank }) => {
               </button>
             </div>
             <p className="text-base text-gray-700 mb-6 text-center">
-              Hola! Al continuar serás redirigido a la pagina oficial de Binance
-              para comprar {name || symbol}, te informamos que no generamos
-              ganancias ni comisiones!
+              ¡Hola! Al continuar serás redirigido a la pagina oficial de
+              Binance para comprar {name || symbol}, ¡te informamos que no
+              generamos ganancias ni comisiones!
             </p>
             <div className="flex justify-center space-x-4">
               <button

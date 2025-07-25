@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import CryptoStatus from "./components/CryptoStatus";
 import NewsPage from "./pages/NewsPage";
+import Footer from "./pages/Footer";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Home />
         <CryptoStatus />
         <NewsPage />
+        <Footer />
       </main>
     </div>
   );

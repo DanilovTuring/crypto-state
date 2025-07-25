@@ -178,7 +178,10 @@ const NewsPage = () => {
       <div className="crypto-overlay::before" />
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-center font-[Inter]">
+          <h1
+            id="newspage"
+            className="text-3xl sm:text-4xl font-bold text-center font-[Inter]"
+          >
             Crypto News Reddit
           </h1>
           <button
