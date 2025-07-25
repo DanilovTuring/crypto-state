@@ -85,7 +85,7 @@ const CryptoCard = ({
         </span>
       </div>
       {/* Columna Logo y Nombre (Fija) */}
-      <div className="w-[200px] flex items-center space-x-2 sticky left-[60px] bg-white z-10">
+      <div className="w-[140px] flex items-center space-x-2 sticky left-[60px] bg-white z-10">
         <img
           src={
             image ||

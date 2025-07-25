@@ -8,11 +8,11 @@ const TableHeader = () => {
       aria-label="Encabezado de tabla de criptomonedas"
     >
       {/* Columna Ranking (Fija) */}
-      <div className="w-[60px] text-left sticky left-0 bg-white z-10">
+      <div className="w-[60px] text-left sticky left-0 bg-white z-20">
         <span>Nº</span>
       </div>
       {/* Columna Moneda (Fija) */}
-      <div className="w-[200px] text-left sticky left-[60px] bg-white z-10">
+      <div className="w-[140px] text-left sticky left-[60px] bg-white z-20">
         <span>Moneda</span>
       </div>
       {/* Columnas desplazables */}
